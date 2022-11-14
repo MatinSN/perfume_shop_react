@@ -10,6 +10,8 @@ import Sdata from "./components/shops/Sdata"
 import { Provider } from "react-redux";
 import store from "./redux/getStore"
 import DetailView from "./components/DetailView/DetailView"
+import DiscountPage from "./pages/discountsPage/DiscountPage"
+import WomenPerfumes from "./pages/womenPefumes/WomenPerfumes"
 
 
 
@@ -75,6 +77,7 @@ function App() {
 
   return (
     <>
+    
     <Provider store={store}>
       <Router>
         <Header CartItem={CartItem} />
@@ -84,6 +87,12 @@ function App() {
           </Route>
           <Route path='/product/:id' exact>
             <DetailView />
+            </Route>
+            <Route path='/discounts' exact>
+            <DiscountPage />
+            </Route>
+            <Route path='/womenPerfumes' exact>
+            <WomenPerfumes />
             </Route>
           <Route path='/cart' exact>
             <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />

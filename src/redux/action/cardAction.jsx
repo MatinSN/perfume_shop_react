@@ -1,7 +1,7 @@
 
 import ActionTypes from "./actionTypes"
 
-export function addNewCard(id,brandName,name,price,rate,discount,image){
+export function addNewCard(id,brandName,name,price,rate,discount,image,count){
 
 
  return   {
@@ -13,7 +13,8 @@ export function addNewCard(id,brandName,name,price,rate,discount,image){
        price,
        rate,
        discount,
-       image
+       image,
+       count
 }
 }
 }
@@ -34,4 +35,8 @@ export function addNewArrival(id,brandName,name,rate,image){
   }
   }
   
+
+  export const resetCardsReducer = ()=>({
+   type:ActionTypes.RESET_CARD_REDUCER
+  })
   

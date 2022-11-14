@@ -1,0 +1,14 @@
+.pagginator{
+    display: flex;
+    justify-content: center;
+}
+
+.pagginator > li{
+    margin: 10px;
+    padding:5px 10px;
+}
+
+.activatePage{
+    background-color:#EC7DA5;
+    border: 1px solid #74002A;
+}

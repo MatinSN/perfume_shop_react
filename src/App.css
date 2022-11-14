@@ -10,7 +10,7 @@ html {
   
 }
 body {
-  font-family:Georgia, 'Times New Roman', Times, serif;
+  font-family:Georgia, 'Times New Roman', Times, serif; 
 
   background-color: #ffffff;
 
@@ -76,7 +76,8 @@ button {
 
 /*---------category----------*/
 .contentWidth {
-  width: 77%;
+  width: 100%;
+  margin:auto;
 }
 .category {
   box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
@@ -252,3 +253,40 @@ button {
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 10px;
 }
+
+
+/* .mrg{
+  margin: 200px;
+  margin-top: 100px;
+}
+
+.slider_box{
+  width: 300px;
+}
+
+.mrg-top{
+  margin-top: 100px;
+}
+
+.text{
+  direction: rtl;
+}
+
+
+.rate i {
+  font-size: 15px;
+  color: #ffcd4e;
+  margin: 5px 5px 5px 0;
+}
+
+.mrg-small{
+  margin: 30px;
+}
+
+.mrg-top-ms{
+  margin-top: 20px;
+}
+
+tr{
+  border-bottom: 1px solid #D5D5E5;
+} */

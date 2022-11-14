@@ -21,6 +21,7 @@ export function toFarsiNumber(n) {
 
 
   export function getDiscountPrice(price,discount){
-    return (price*((100-discount)/100)).toString()
+   
+   return (Math.round(price*((100-discount)/100))).toString()
   }
   

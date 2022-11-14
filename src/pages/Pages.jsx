@@ -25,11 +25,7 @@ const Pages = ({ productItems, addToCart, CartItem, shopItems }) => {
 
   useEffect(() => {
      
-    if(fetchData){
-   dispatch(testApi())
-   setFetchData(false)
-    }
-    
+   
     console.log("state")
     console.log(state)
   },[state]);
@@ -42,9 +38,8 @@ const Pages = ({ productItems, addToCart, CartItem, shopItems }) => {
       <NewArrivals />
      
       {/* <Discount /> */}
-      <TopCate />
-      <Shop shopItems={shopItems} addToCart={addToCart} />
-      <Annocument />
+      {/* <TopCate /> */}
+      {/* <Annocument /> */}
       <Wrapper />
     </>
   )

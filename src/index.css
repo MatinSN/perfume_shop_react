@@ -1,7 +1,8 @@
 @font-face {
-    font-family: 'B-Nazanin' !important;
-    src: local('B-Nazanin'), url('./fonts/B-Nazanin.ttf') format('truetype');
-  }
-  
+  font-family: 'Vazir-Bold';
+  src: local('Vazir-Bold.ttf'), url('./fonts/Vazir-Bold.ttf') format('truetype');
+} 
 
- 
+.body{
+  font-family: Vazir-Bold !important;
+}
