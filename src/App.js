@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState,useEffect } from "react"
 import "./App.css"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import Header from "./common/header/Header"
@@ -12,8 +12,8 @@ import store from "./redux/getStore"
 import DetailView from "./components/DetailView/DetailView"
 import DiscountPage from "./pages/discountsPage/DiscountPage"
 import WomenPerfumes from "./pages/womenPefumes/WomenPerfumes"
-
-
+import {useDispatch} from "react-redux"
+import {setCart} from "./redux/action/cartActions"
 
 
 function App() {
@@ -35,7 +35,28 @@ function App() {
 
   //Step 2 :
   const [CartItem, setCartItem] = useState([])
+  const dispatch =useDispatch()
 
+  const setUserCart=()=>{
+    const token = localStorage.getItem("token")
+    if(token){
+
+    }
+    else{
+      let cart = JSON.parse(localStorage.getItem("cart"))
+      console.log("Cart cart",cart)
+        if(cart===null){
+          cart =[]
+        }
+
+        dispatch(setCart(cart))
+
+    }
+  }
+  setUserCart()
+   useEffect(()=>{
+      setUserCart()
+   },[])
   //Step 4 :
   const addToCart = (product) => {
     // if hamro product alredy cart xa bhane  find garna help garxa
@@ -78,7 +99,7 @@ function App() {
   return (
     <>
     
-    <Provider store={store}>
+    
       <Router>
         <Header CartItem={CartItem} />
         <Switch>
@@ -100,7 +121,7 @@ function App() {
         </Switch>
         <Footer />
       </Router>
-      </Provider>
+    
     </>
   )
 }

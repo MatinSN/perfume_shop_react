@@ -26,11 +26,11 @@ export function testApi(){
     }
 }
 
-export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both"){
+export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both",rateSort=false,priceSortAce=false,priceSortDec=false){
     return dispatch =>{
         console.log("here you go", actionType)
         return axios
-        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}`)
+        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}&rate_sort=${rateSort}&price_sort_dec=${priceSortDec}&price_sort_ace=${priceSortAce}`)
          .then((response)=>{
            const count = response.data.count
             const data =response.data.results

@@ -15,9 +15,11 @@ const WomenPerfumes = () => {
     const itemsPerPage = 6
     const dispatch = useDispatch()
 
-  const getPageData=(pageNum)=>{
+    
+
+  const getPageData=(pageNum,dateSort=false,rateSort=false,priceDec=false,priceAce=false)=>{
        dispatch(resetCardsReducer())
-       dispatch(getPerfumes(pageNum,itemsPerPage,false,ActionTypes.ADD_CARD_INFO,false,"Female"))
+       dispatch(getPerfumes(pageNum,itemsPerPage,dateSort,ActionTypes.ADD_CARD_INFO,false,"Female",rateSort,priceAce,priceDec))
   }
   
   const setNumberOfPages=()=>{
@@ -26,17 +28,17 @@ const WomenPerfumes = () => {
 
   useEffect(()=>{
     if(fetchData){
-      getPageData("1")
+      getPageData("1",true)
       setFetchData(false)
     }
     setNumberOfPages()
-    
-  },[cardsInfo.count])
+    console.log(cardsInfo)
+  },[cardsInfo])
 
 
   return (
     <>
-    <LongList getPageData={getPageData} pageCount={pageCount} shopItems={cardsInfo.cards} title="عطرهای زنانه"  />
+    <LongList itemsPerPage={itemsPerPage} getPageData={getPageData} pageCount={pageCount} shopItems={cardsInfo.cards} title="عطرهای زنانه"  />
 
     </>
   )

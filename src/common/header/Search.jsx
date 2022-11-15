@@ -1,8 +1,28 @@
-import React from "react"
+import React,{useState,useEffect} from "react"
 import logo from "../../components/assets/images/logo.svg"
 import { Link } from "react-router-dom"
+import { useSelector } from "react-redux"
 
 const Search = ({ CartItem }) => {
+   
+   const [numberOfCartItems,setNumberOfCartItems]=useState(0)
+   const cart = useSelector(state=>state.cart)
+
+   const countCartItems=()=>{
+      let result=0
+      console.log("cart is",cart)
+      cart.forEach((item)=>{
+        result = result + item.quantity
+      })
+      setNumberOfCartItems(result)
+   }
+
+   useEffect(()=>{
+      
+      countCartItems()
+   },[cart])
+
+
   // fixed Header
   window.addEventListener("scroll", function () {
     const search = document.querySelector(".search")
@@ -28,7 +48,7 @@ const Search = ({ CartItem }) => {
             <div className='cart'>
               <Link to='/cart'>
                 <i className='fa fa-shopping-bag icon-circle'></i>
-                <span>{CartItem.length === 0 ? "" : CartItem.length}</span>
+                <span>{numberOfCartItems}</span>
               </Link>
             </div>
           </div>

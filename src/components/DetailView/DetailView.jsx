@@ -1,4 +1,4 @@
-import React from "react"
+import React,{useState} from "react"
 import {Route, Link, Routes, useParams} from 'react-router-dom';
 import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import Slider from "react-slick"
@@ -6,6 +6,8 @@ import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import "./DetailView.css"
 import { toFarsiNumber } from "../../utils";
+import { useSelector,useDispatch } from "react-redux";
+import { addToCartAction } from "../../redux/action/cartActions";
 
 
 const SampleNextArrow = (props) => {
@@ -31,7 +33,11 @@ const SamplePrevArrow = (props) => {
 
 const DetailView = () => {
    const {id} = useParams()
-  
+   const [numberOfPerfumes,setNumberOfPerfumes]=useState(1)
+   const user = useSelector(state=>state.user)
+   const dispatch = useDispatch()
+
+
    const settings = {
     rows:1,
     dots: false,
@@ -43,6 +49,27 @@ const DetailView = () => {
     prevArrow: <SamplePrevArrow />,
   }
 
+  const onIncreaseClick=(e)=>{
+     e.preventDefault()
+     setNumberOfPerfumes(numberOfPerfumes+1)
+  }
+  const onDecreaseClick = (e)=>{
+    e.preventDefault()
+     if(numberOfPerfumes > 1){
+      setNumberOfPerfumes(numberOfPerfumes-1)
+     }
+  }
+  const onAddToCartClick =()=>{
+
+    if(user.token){
+
+    }else{
+    console.log("For setting ")
+
+      dispatch(addToCartAction("1","test",20,"",numberOfPerfumes))
+    }
+
+  }
   return (
     <>
      <div className="mrg">
@@ -81,6 +108,18 @@ const DetailView = () => {
             <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
             <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
           </div>
+       
+            <div className="addToCart">
+            <button className="addToCart-btn" onClick={onDecreaseClick}>-</button>
+             <input className="addToCart-input" value={numberOfPerfumes} type="number" />
+             <button className="addToCart-btn" onClick={onIncreaseClick}>+</button>
+            </div>
+            <div >
+            <button className="addBtn" onClick={onAddToCartClick}>افزودن به سبد خرید</button>
+
+            </div>
+          
+  
           <div className="d-flex">
               <p className="text">
               عطر ادکلن تام فورد اومبره لدر-Tom Ford Ombré Leather عطری است با رایحه کمی گرم و چرمی. این عطر در سال ۲۰۱۸ به بازار عطر و ادکلن عرضه شد . تام فورد اومبره لدر- Tom Ford Ombré Leather عطری است مردانه و بسیار شیک. 

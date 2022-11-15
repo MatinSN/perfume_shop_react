@@ -6,11 +6,16 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import App from "./App"
 import "./index.css"
 import "./fonts/Vazir-Bold.ttf"
+import { Provider } from "react-redux";
+import store from "./redux/getStore"
 
 
 ReactDOM.render(
+
   <React.StrictMode>
+    <Provider store={store}>
     <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 )
