@@ -34,6 +34,7 @@ export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionType
          .then((response)=>{
            const count = response.data.count
             const data =response.data.results
+            console.log("response",response)
             data.forEach((item)=>{
                 console.log("item",item)
                 const id = item.id

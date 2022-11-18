@@ -12,8 +12,10 @@ import store from "./redux/getStore"
 import DetailView from "./components/DetailView/DetailView"
 import DiscountPage from "./pages/discountsPage/DiscountPage"
 import WomenPerfumes from "./pages/womenPefumes/WomenPerfumes"
+import SignUpSignIn from "./pages/signUpSignIn/SignUpSignIn"
 import {useDispatch} from "react-redux"
 import {setCart} from "./redux/action/cartActions"
+import axios from "axios"
 
 
 function App() {
@@ -55,6 +57,18 @@ function App() {
   }
   setUserCart()
    useEffect(()=>{
+    axios.post('https://gateway.zibal.ir/v1/request', {
+      "merchant": "zibal",
+      "amount": 160000,
+      "callbackUrl": "http://yourapiurl.com/callback.php",
+      "description": "Hello World!",
+
+  })
+    .then((response) => {
+      console.log("Response",response);
+    }, (error) => {
+      console.log(error);
+    })
       setUserCart()
    },[])
   //Step 4 :
@@ -117,6 +131,9 @@ function App() {
             </Route>
           <Route path='/cart' exact>
             <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />
+          </Route>
+          <Route path='/signUpSignIn' exact>
+             <SignUpSignIn />
           </Route>
         </Switch>
         <Footer />

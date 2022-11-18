@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css"
 import {useDispatch,useSelector} from "react-redux"
 import {getPerfumes} from "../../redux/action/api"
 import {toFarsiNumber,getDiscountPrice} from "../../utils"
+import ActionTypes from "../../redux/action/actionTypes"
 
 const SampleNextArrow = (props) => {
   const { onClick } = props
@@ -35,7 +36,7 @@ const FlashCard = ({ productItems, addToCart }) => {
 
   useEffect(()=>{
      if(fetchData){
-        dispatch(getPerfumes(1,6))
+        dispatch(getPerfumes(1,6,false,ActionTypes.ADD_CARD_INFO,"both","both",false,false,false))
         setFetchData(false)
      }
   },[])
