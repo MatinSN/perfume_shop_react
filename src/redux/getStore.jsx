@@ -6,6 +6,7 @@ import newArrivalsReducer from "./reducers/newArrivalsReducer"
 import pageReducer from "./reducers/pageReducer"
 import userReducer from "./reducers/userReducer";
 import cartReducer from "./reducers/cartReducer";
+import brandReducer from "./reducers/brandReducer";
 
 const store=configureStore({
   reducer:{
@@ -13,7 +14,8 @@ const store=configureStore({
     newArrivals:newArrivalsReducer,
     pageCards:pageReducer,
     user:userReducer,
-    cart:cartReducer
+    cart:cartReducer,
+    brands:brandReducer
   },
   middleware:[thunk]
 });

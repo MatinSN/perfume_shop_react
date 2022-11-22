@@ -32,7 +32,45 @@
   border: 2px solid rgba(0, 0, 0, 0.1);
   /*padding: 10px;*/
   border-radius: 50px;
+  direction: rtl;
+  position: relative;
 }
+
+.search-result-container{
+  position:absolute;
+  width: 100%;
+  margin-top: 60px;
+  overflow-y: scroll;
+  height: 70vh;
+  margin-bottom: 20px;
+  background-color:white;
+}
+
+.search-item-container{
+  display: flex;
+  
+}
+
+.icon-container{
+  align-items: center;
+}
+
+
+.search-item{
+  margin:30px;
+}
+
+
+.search-btn-container{
+  direction: rtl;
+  width: 200px;
+}
+
+.search-btn{
+  width: 100%;
+  height: 100%;
+}
+
 .search-box i {
   width: 5%;
   text-align: center;

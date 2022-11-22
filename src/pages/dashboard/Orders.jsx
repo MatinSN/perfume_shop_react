@@ -1,0 +1,17 @@
+import React from "react"
+
+
+
+const Orders=()=>{
+    return (
+        <>
+        <div>
+             Orders view
+        </div>
+         
+        </>
+    )
+}
+
+
+export default Orders

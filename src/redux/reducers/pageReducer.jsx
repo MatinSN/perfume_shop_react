@@ -50,6 +50,13 @@ const pageReducer = function(state = InitialState, action) {
         case ActionTypes.ADD_WOMEN_TESTER_CARD:
              const newState4={...state,womenTesters:[...state.womenTesters,getNewCard(action.payload)]}
             return newState4
+        case ActionTypes.RESET_PAGE_REDUCER:
+            return {
+                menPerfumes:[],
+                womenPerfumes:[],
+                menTesters:[],
+                womenTesters:[]
+            }
         default:
             return state
     }

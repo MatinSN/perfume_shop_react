@@ -26,7 +26,7 @@ const Navbar = () => {
                 <Link to='/track'>تستر ها </Link>
               </li>
               <li>
-                <Link to='/contact'>  حراج عطر</Link>
+                <Link to='/discounts'>  حراج عطر</Link>
               </li>
               <li>
                 <Link to='/'>خانه</Link>

@@ -3,3 +3,10 @@
     margin: 30px;
   }
   
+
+.shop-header{
+  display: flex;
+  justify-content: space-between;
+  margin:0 100px;
+  margin-top:50px;
+}

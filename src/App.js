@@ -7,15 +7,20 @@ import Data from "./components/Data"
 import Cart from "./common/Cart/Cart"
 import Footer from "./common/footer/Footer"
 import Sdata from "./components/shops/Sdata"
-import { Provider } from "react-redux";
-import store from "./redux/getStore"
 import DetailView from "./components/DetailView/DetailView"
 import DiscountPage from "./pages/discountsPage/DiscountPage"
 import WomenPerfumes from "./pages/womenPefumes/WomenPerfumes"
+import MenPerfumes from "./pages/menPerfumes/MenPerfumes"
+import MenTesters from "./pages/menTesters/menTesters"
+import WomenTesters from "./pages/womenTesters/womenTesters"
 import SignUpSignIn from "./pages/signUpSignIn/SignUpSignIn"
 import {useDispatch} from "react-redux"
 import {setCart} from "./redux/action/cartActions"
 import axios from "axios"
+import Dashboard from "./pages/dashboard/Dashboard"
+import {signUp,login,getCartProducts,addProductToCart,deleteItemWithQuantity,deleteCartItem} from "./redux/action/api"
+import {useSelector} from "react-redux"
+import {setToken} from "./redux/action/userActions"
 
 
 function App() {
@@ -41,8 +46,10 @@ function App() {
 
   const setUserCart=()=>{
     const token = localStorage.getItem("token")
-    if(token){
+    dispatch(getCartProducts("f7f16915257c6a3b0c007def057bb96713394542"))
 
+    if(token){
+       dispatch(setToken(token))
     }
     else{
       let cart = JSON.parse(localStorage.getItem("cart"))
@@ -55,21 +62,33 @@ function App() {
 
     }
   }
-  setUserCart()
+  //  const st = useSelector(state=>state.user)
+   const [fetch,setFetch]= useState(true)
    useEffect(()=>{
-    axios.post('https://gateway.zibal.ir/v1/request', {
-      "merchant": "zibal",
-      "amount": 160000,
-      "callbackUrl": "http://yourapiurl.com/callback.php",
-      "description": "Hello World!",
-
-  })
-    .then((response) => {
-      console.log("Response",response);
-    }, (error) => {
-      console.log(error);
-    })
+    if(fetch){
       setUserCart()
+      setFetch(false)   
+    }
+
+  //   axios.post('https://gateway.zibal.ir/v1/request', {
+  //     "merchant": "zibal",
+  //     "amount": 160000,
+  //     "callbackUrl": "http://yourapiurl.com/callback.php",
+  //     "description": "Hello World!",
+
+  // })
+  //   .then((response) => {
+  //     console.log("Response",response);
+  //   }, (error) => {
+  //     console.log(error);
+  //   })
+      // if(fetch){
+      //       dispatch(login("temp5","1234"))
+      //       setUserCart()
+      //       setFetch(false)
+      // }
+     
+      
    },[])
   //Step 4 :
   const addToCart = (product) => {
@@ -120,6 +139,9 @@ function App() {
           <Route path='/' exact>
             <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} />
           </Route>
+          <Route path='/dashboard' exact>
+            <Dashboard  />
+          </Route>
           <Route path='/product/:id' exact>
             <DetailView />
             </Route>
@@ -128,6 +150,15 @@ function App() {
             </Route>
             <Route path='/womenPerfumes' exact>
             <WomenPerfumes />
+            </Route>
+            <Route path='/womenTesters' exact>
+            <WomenTesters />
+            </Route>
+            <Route path='/menPerfumes' exact>
+            <MenPerfumes />
+            </Route>
+            <Route path='/menTesters' exact>
+            <MenTesters />
             </Route>
           <Route path='/cart' exact>
             <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />

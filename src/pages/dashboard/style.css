@@ -1,0 +1,41 @@
+.dashboard-container{
+    display: flex;
+    margin:40px;
+    justify-content: space-around;
+}
+
+.dashboard-links{
+    flex-grow: 1;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    direction: rtl;
+
+}
+
+.dashboard-content{
+    flex-grow:4;
+    margin: 20px;
+    display: flex;
+    justify-content: end;
+}
+
+.dashboard-links > ul > li{
+    margin:10px 0;
+    padding:10px 0;
+    border-bottom: 1px solid #BFC7BF;
+    width: 200px;
+    cursor: pointer;
+}
+
+
+.address{
+   width:400px;
+   height:200px;
+   max-width: 400px;
+
+}
+
+textarea {
+    resize: none;
+ }

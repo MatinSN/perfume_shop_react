@@ -9,8 +9,10 @@ initialState=[
         id,
         productName,
         price,
+        discount,
         image,
-        quantity
+        quantity,
+        productId,
     }
 ]
 */
@@ -39,7 +41,8 @@ const cartReducer = function(state = InitialState, action) {
             return newState
 
         case ActionTypes.SET_CART:
-          console.log("Initialized it!!")
+            localStorage.setItem("cart",JSON.stringify(action.payload))
+
          return action.payload
        
         default:

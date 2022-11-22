@@ -61,3 +61,9 @@ export const addWomenTester=(id,brandName,name,price,rate,discount,image)=>{
       }
     }
 }
+
+export const resetDiscountPageReducer =()=>{
+    return {
+        type:ActionTypes.RESET_PAGE_REDUCER,
+    }
+}
