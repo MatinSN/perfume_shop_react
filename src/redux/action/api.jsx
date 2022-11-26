@@ -5,6 +5,9 @@ import ActionTypes from "./actionTypes"
 import {setToken,setIsLoggedIn,setUserInfo} from "../action/userActions"
 import { setCart } from "./cartActions"
 import { setDesignerBrands,setLuxBrands } from "./brandActions"
+import {addNewSearchCard,addSearchResult} from "./searchActions"
+import {addNewPerfume} from "./perfumeDetailActions"
+import { resetCommentReducer,addComment,setComments } from "./commentActions"
 
 export function testApi(){
     return dispatch =>{
@@ -30,11 +33,11 @@ export function testApi(){
     }
 }
 
-export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both",rateSort=false,priceSortAce=false,priceSortDec=false){
+export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both",rateSort=false,priceSortAce=false,priceSortDec=false,brand="",search=""){
     return dispatch =>{
         console.log("here you go", actionType)
         return axios
-        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}&rate_sort=${rateSort}&price_sort_dec=${priceSortDec}&price_sort_ace=${priceSortAce}`)
+        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}&rate_sort=${rateSort}&price_sort_dec=${priceSortDec}&price_sort_ace=${priceSortAce}&brand=${brand}&search=${search}`)
          .then((response)=>{
            const count = response.data.count
             const data =response.data.results
@@ -67,6 +70,14 @@ export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionType
                 }
                 else if(actionType === ActionTypes.ADD_WOMEN_TESTER_CARD){
                     dispatch(addWomenTester(id,brandName,name,price,rate,discount,image))
+                }
+                else if(actionType === ActionTypes.ADD_SEARCH_CARD){
+                    dispatch(addNewSearchCard(id,brandName,name,price,rate,discount,image,count))
+
+                }
+                else if(actionType === ActionTypes.ADD_SEARCH_RESULT){
+                    dispatch(addSearchResult(id,brandName,name,price,discount,image))
+
                 }
             })
                     
@@ -211,6 +222,86 @@ export const getBrands=(page="1",count="20",brandType="")=>{
         })
     }
 }
+
+export const getPerfumeWithId=(perfumeId)=>{
+    return dispatch=>{
+        return axios.get(`http://127.0.0.1:8000/perfume/${perfumeId}`)
+        .then((response)=>{
+            
+            console.log("perfume is",response.data)
+            console.log("description is", response.data.perfume.description)
+            const data = response.data
+            const id= data.id
+
+            const perfume = {
+                 name:data.perfume.name,
+                 rate :data.rate,
+                 price : data.price,
+                 discount :data.discount,
+                 description :data.perfume.description,
+                 size : data.size,
+                 nature :data.perfume.nature,
+                 olfactionGroup : data.perfume.olfaction_group,
+                 perfumer :data.perfumer,
+                 gender :data.perfume.gender,
+                 perfumeType :data.perfume.perfume_type,
+                 season :data.perfume.season,
+                 dispersal :data.perfume.dispersal,
+                 image1 :data.perfume.image,
+                 image2 :data.perfume.image2,
+                 quantity :data.quantity,
+                 details :data.perfume.details
+            }
+           
+            dispatch(addNewPerfume(id,perfume))
+        })
+    }
+}
+
+export const addNewComment=(token="",productId,comment="")=>{
+
+    return (dispatch)=>{
+        return axios.post(`http://127.0.0.1:8000/add_comment/?product_id=${productId}`,{
+            comment
+        },{
+            headers: {
+                'Authorization': `Token ${token}`
+              }
+        }).then((response)=>{
+            dispatch(addComment({
+                id:response.data.id,
+                comment:response.data.comment,
+                createdAt:new Date(comment.created_at),
+                username:response.data.user.username
+            }))
+        }) 
+    }
+}
+
+
+export const getComments=(productId)=>{
+
+    return (dispatch)=>{
+        return axios.get(`http://127.0.0.1:8000/perfume_comments/?product_id=${productId}`)
+        .then((response)=>{
+           const commentsData = response.data
+           console.log("Comments data is",commentsData)
+           const comments = []
+           commentsData.forEach((comment)=>{
+            comments.push({
+                id:comment.id,
+                comment:comment.comment,
+                createdAt:new Date(comment.created_at),
+                username:comment.user.username
+            })
+           })
+           dispatch(resetCommentReducer())
+           dispatch(setComments(comments))
+        }) 
+    }
+}
+
+
 
 
 const getExtractedCart=(cartData=[])=>{

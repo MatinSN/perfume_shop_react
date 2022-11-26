@@ -38,12 +38,15 @@
 
 .search-result-container{
   position:absolute;
-  width: 100%;
+  width: 80%;
+  min-width: 500px;
   margin-top: 60px;
   overflow-y: scroll;
   height: 70vh;
   margin-bottom: 20px;
+  margin-left: 70px;
   background-color:white;
+  z-index: 1000;
 }
 
 .search-item-container{
@@ -57,9 +60,27 @@
 
 
 .search-item{
-  margin:30px;
+  margin:10px;
 }
 
+.search-item-image{
+flex-grow: 1;
+}
+
+.search-item-discount{
+  flex-grow: 1;
+
+}
+
+.search-item-name{
+  flex-grow: 2;
+
+}
+
+.search-item-price{
+  flex-grow: 1;
+
+}
 
 .search-btn-container{
   direction: rtl;

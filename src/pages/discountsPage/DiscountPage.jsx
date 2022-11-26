@@ -24,6 +24,7 @@ const DiscountPage = ({ addToCart, shopItems }) => {
           dispatch(getPerfumes(1,20,false,ActionTypes.ADD_MEN_TESTER_CARD,"true","Male"))
           dispatch(getPerfumes(1,20,false,ActionTypes.ADD_WOMEN_TESTER_CARD,"true","Female"))
           dispatch(getBrands("1",20,"LUX"))
+          dispatch(getBrands("1",20,"Designer"))
 
           setFetchData(false)
        }
@@ -70,6 +71,14 @@ const DiscountPage = ({ addToCart, shopItems }) => {
          <h3>برندهای لوکس</h3>
        </div>
        <Brands brands={brands.luxBrands} />
+
+       <hr />
+       <div className='shop-header'>
+          <h5>مشاهده همه </h5>
+
+         <h3>برندهای دیزاینر</h3>
+       </div>
+       <Brands brands={brands.designerBrands} />
       </>
     )
   }

@@ -46,6 +46,7 @@
 
 import React, { useState } from "react"
 import { toFarsiNumber,getDiscountPrice } from "../../utils"
+import { Link } from "react-router-dom"
 import "./style.css"
 
 const BrandCard = ({ brands }) => {
@@ -53,14 +54,14 @@ const BrandCard = ({ brands }) => {
 
   return (
     <>
-      {brands.map((perfume)=> {
+      {brands.map((item)=> {
         return (
-          <div className='box '>
+          <div className='box ' key={item.id}>
             <div className='product mtop brand-container'>
               <div className='img '>
-               
-                <img width={100} height={100} src={perfume.image} alt='' />
-           
+                <Link to={`brands/${item.name}`}>
+                  <img width={100} height={100} src={item.image} alt='' />
+                </Link>
               </div>
             
             

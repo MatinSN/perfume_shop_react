@@ -13,7 +13,9 @@ import WomenPerfumes from "./pages/womenPefumes/WomenPerfumes"
 import MenPerfumes from "./pages/menPerfumes/MenPerfumes"
 import MenTesters from "./pages/menTesters/menTesters"
 import WomenTesters from "./pages/womenTesters/womenTesters"
+import BrandPerfumes from "./pages/brandPerfumes/brandPerfumes"
 import SignUpSignIn from "./pages/signUpSignIn/SignUpSignIn"
+import SearchResultPage from "./pages/searchResultPage/SearchResultPage"
 import {useDispatch} from "react-redux"
 import {setCart} from "./redux/action/cartActions"
 import axios from "axios"
@@ -46,10 +48,11 @@ function App() {
 
   const setUserCart=()=>{
     const token = localStorage.getItem("token")
-    dispatch(getCartProducts("f7f16915257c6a3b0c007def057bb96713394542"))
 
     if(token){
        dispatch(setToken(token))
+     dispatch(getCartProducts(token))
+
     }
     else{
       let cart = JSON.parse(localStorage.getItem("cart"))
@@ -145,6 +148,9 @@ function App() {
           <Route path='/product/:id' exact>
             <DetailView />
             </Route>
+            <Route path='/search/:searchWord' exact>
+            <SearchResultPage />
+            </Route>
             <Route path='/discounts' exact>
             <DiscountPage />
             </Route>
@@ -159,6 +165,9 @@ function App() {
             </Route>
             <Route path='/menTesters' exact>
             <MenTesters />
+            </Route>
+            <Route path='/brands/:name' exact>
+            <BrandPerfumes />
             </Route>
           <Route path='/cart' exact>
             <Cart CartItem={CartItem} addToCart={addToCart} decreaseQty={decreaseQty} />

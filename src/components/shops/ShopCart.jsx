@@ -45,7 +45,10 @@
 //export default ShopCart
 
 import React, { useState } from "react"
+import { Link } from "react-router-dom"
 import { toFarsiNumber,getDiscountPrice } from "../../utils"
+import Rater from 'react-rater'
+import 'react-rater/lib/react-rater.css'
 
 
 const ShopCart = ({ shopItems, addToCart,cards }) => {
@@ -62,18 +65,14 @@ const ShopCart = ({ shopItems, addToCart,cards }) => {
             <div className='product mtop'>
               <div className='img'>
                 <span className='discount'>{perfume.discount}% Off</span>
-                <img width={200} height={200} src={perfume.image} alt='' />
-           
+                <Link to={`/product/${perfume.id}`}>
+                   <img width={200} height={200} src={perfume.image} alt='' />
+                </Link>
               </div>
               <div className='product-details'>
                 <h3>{perfume.name}</h3>
-                <div className='rate'>
-                  <i className='fa fa-star'></i>
-                  <i className='fa fa-star'></i>
-                  <i className='fa fa-star'></i>
-                  <i className='fa fa-star'></i>
-                  <i className='fa fa-star'></i>
-                </div>
+                <Rater interactive={false}   total={5} rating={perfume.rate} />
+
                 <div className='price'>
                 <div>
                       <h6 className="text-decoration-line-through fw-light text-secondary"><label>تومان</label>{toFarsiNumber(perfume.price)}  </h6>

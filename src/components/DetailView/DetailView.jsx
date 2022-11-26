@@ -1,13 +1,15 @@
-import React,{useState} from "react"
+import React,{useState,useEffect} from "react"
 import {Route, Link, Routes, useParams} from 'react-router-dom';
-import { MDBRow, MDBCol } from 'mdb-react-ui-kit';
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css"
 import "slick-carousel/slick/slick-theme.css"
 import "./DetailView.css"
-import { toFarsiNumber } from "../../utils";
+import { toFarsiNumber,getDiscountPrice } from "../../utils";
 import { useSelector,useDispatch } from "react-redux";
 import { addToCartAction } from "../../redux/action/cartActions";
+import {getPerfumeWithId,addProductToCart,getComments} from "../../redux/action/api"
+import Rater from 'react-rater'
+import 'react-rater/lib/react-rater.css'
 
 
 const SampleNextArrow = (props) => {
@@ -36,7 +38,41 @@ const DetailView = () => {
    const [numberOfPerfumes,setNumberOfPerfumes]=useState(1)
    const user = useSelector(state=>state.user)
    const dispatch = useDispatch()
+   const [fetch,setFetch] = useState(true)
+   const perfumes = useSelector(state=>state.perfumes)
+   const comments = useSelector(state=>state.comments)
+   const [perfumeDetail,setPerfumeDetail] = useState  ({
+    name:"",
+    rate :0,
+    price : 0,
+    discount :0,
+    description :"",
+    size : 0,
+    nature :"",
+    olfactionGroup : "",
+    perfumer :"",
+    gender :"",
+    perfumeType :"",
+    season :"",
+    dispersal :"",
+    image1 :"",
+    image2 :"",
+    quantity :0,
+    details :[]
+})
 
+   useEffect(()=>{
+        
+        if(fetch){
+          dispatch(getPerfumeWithId(id))
+          dispatch(getComments(id))
+          setFetch(false)
+        }
+
+        if(perfumes[id] !== undefined){
+          setPerfumeDetail(perfumes[id])
+        }
+   },[perfumes])
 
    const settings = {
     rows:1,
@@ -62,7 +98,7 @@ const DetailView = () => {
   const onAddToCartClick =()=>{
 
     if(user.token){
-
+         dispatch(addProductToCart(user.token,id,numberOfPerfumes))
     }else{
     console.log("For setting ")
 
@@ -72,15 +108,15 @@ const DetailView = () => {
   }
   return (
     <>
-     <div className="mrg">
+     <div className="mrg perfume-detail-container">
  
     
-     <div className="d-flex justify-content-center">
+     <div className="d-flex justify-content-center perfume-images">
       <div >
            <div className="slider_box">
            <Slider {...settings}>
-      <img width="300" height="300" src={"http://127.0.0.1:8000/media/perfumes/p1.jpg"} alt='' />      
-      <img width="300" height="300" src={"http://127.0.0.1:8000/media/perfumes/p1.jpg"} alt='' />      
+      <img width="300" height="300" src={`http://127.0.0.1:8000${perfumeDetail.image1}`} alt='' />      
+      <img width="300" height="300" src={`http://127.0.0.1:8000${perfumeDetail.image2}`} alt='' />      
       
       
       </Slider>
@@ -95,20 +131,81 @@ const DetailView = () => {
       <div className='d-flex flex-column mb-3'> 
       
          <div className="mrg-top">
-             <h2 className="text">عطر ادکلن تام فورد اومبره لدر | Tom Ford Ombré Leather 2018</h2>
+             <h2 className="text">{perfumeDetail.name}</h2>
          </div>
-         <div className='rate d-flex justify-content-end'>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star'></i>
-                    <i className='fa fa-star-half'></i>
+         <div className='d-flex justify-content-end'>
+         <Rater interactive={false}   total={5} rating={perfumeDetail.rate} />
           </div>
           <div className='rate d-flex justify-content-end m-t-5'>
-            <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
-            <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
+            <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(getDiscountPrice(parseFloat(perfumeDetail.price),parseInt(perfumeDetail.discount)))}  </h3>
+            <h3 className="mrg-small text-decoration-line-through"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
+
           </div>
        
+          
+          
+  
+          <div className="description-container">
+              <p className="text">
+                {perfumeDetail.description}
+              </p>
+          </div>
+          <table class="text">
+              <tbody>
+              <tr className="mrg-top-ms">
+                <td><span >سایز</span></td>
+                <td ><span >{perfumeDetail.size}&nbsp; میل</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >طبع</span></td>
+                <td ><span > 	{perfumeDetail.nature}</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >گروه بویایی</span></td>
+                <td ><span > 	{perfumeDetail.olfactionGroup}</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >عطار</span></td>
+                <td ><span >{perfumeDetail.perfumer}</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >جنسیت</span></td>
+                <td >{(perfumeDetail.gender === "Male" && <span>مردانه</span>)|| (perfumeDetail.gender==="Female" && <span>زنانه</span>)||(perfumeDetail.gender==="Both" && <span>هر دو</span>)}</td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >نوع عطر	</span></td>
+                <td ><span >{perfumeDetail.perfumeType}
+</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >فصل</span></td>
+                <td ><span > {perfumeDetail.season}</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >ماندگاری</span></td>
+                <td ><span > {perfumeDetail.persistance}
+</span></td>
+                
+             </tr>
+             <tr className="mrg-top-ms">
+                <td><span >پراکندگی</span></td>
+                <td ><span > {perfumeDetail.dispersal}</span></td>
+                
+             </tr>
+           
+             
+              </tbody>
+
+          </table>
+        
+          {(perfumeDetail.quantity === 0 && <h2>ناموجود</h2>)|| (<div className="addToCart-container">
             <div className="addToCart">
             <button className="addToCart-btn" onClick={onDecreaseClick}>-</button>
              <input className="addToCart-input" value={numberOfPerfumes} type="number" />
@@ -118,86 +215,58 @@ const DetailView = () => {
             <button className="addBtn" onClick={onAddToCartClick}>افزودن به سبد خرید</button>
 
             </div>
-          
-  
-          <div className="d-flex">
-              <p className="text">
-              عطر ادکلن تام فورد اومبره لدر-Tom Ford Ombré Leather عطری است با رایحه کمی گرم و چرمی. این عطر در سال ۲۰۱۸ به بازار عطر و ادکلن عرضه شد . تام فورد اومبره لدر- Tom Ford Ombré Leather عطری است مردانه و بسیار شیک. 
-              </p>
-          </div>
-          <table class="text">
-              <tbody>
-              <tr className="mrg-top-ms">
-                <td><span >سایز</span></td>
-                <td ><span >100&nbsp; میل</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >طبع</span></td>
-                <td ><span > 	گرم و تلخ</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >عطار</span></td>
-                <td ><span ></span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >جنسیت</span></td>
-                <td ><span >مرد</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >نوع عطر	</span></td>
-                <td ><span >ادو پرفیوم
-</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >فصل</span></td>
-                <td ><span >همه فصل ها</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >ماندگاری</span></td>
-                <td ><span >بسیار خوب
-</span></td>
-                
-             </tr>
-             <tr className="mrg-top-ms">
-                <td><span >پراکندگی</span></td>
-                <td ><span >بسیار خوب</span></td>
-                
-             </tr>
-           
-             
-              </tbody>
-
-          </table>
-        
-        
+          </div>)}
       </div>
       <div className="description">
         <hr />
-      <div className="description-content">
-        <h2>عطر ادکلن بودیسیا د ویکتوریوس بلو سفیر-Boadicea the Victorious Blue Sapphire</h2>
-        <p>عطر ادکلن بودیسیا د ویکتوریوس بلو سفیر-Boadicea the Victorious Blue Sapphire عطری است گرم و تلخ.این عطر در سال 2013 به بازار عطر و ادکلن عرضه شد.عطر ادکلن بودیسیا د ویکتوریوس بلو سفیر-Boadicea the Victorious Blue Sapphire عطری است زنانه و مردانه و لاکچری.</p>
-        <div className="description-img">
-        <img  width="300" height="300" src={""} alt='' />      
-        <div>
-           <p>this is the title of the image</p>
-        </div>
-        </div>
-   
-
-      </div>
+        <div className="description-content">
+        {perfumeDetail.details.map((detail)=>{
+          return (
+            <div className="detail-container" key={detail.id}>
+            <h2>{detail.title}</h2>
+            <p>{detail.description}</p>
+            <div className="description-img">
+            {/* <div>
+               <p>this is the title of the image</p>
+            </div> */}
+            </div>
+       
+    
+          </div>
+          )
+         })}
+          </div>
+        
       <div  >توضیحات</div>
     </div>
 
       </div>
   
      </div>
+      <hr />
+      <div className="comments-container">
+          {comments.map((comment)=>{
+            return (
+              <>
+               <div className="comment-container" key={comment.id}>
+               <hr />
+            <div className="comment-header">
+              <div><h4>-{comment.username}</h4></div>
+              <div>{comment.createdAt.toLocaleDateString('fa-IR').toLocaleString()}</div>
+            </div>
+            <div className="comment-body">
+              
+              <p>{comment.comment}</p>
+              
+            </div>
+            
+          </div>
+       
 
+              </>
+            )
+          })}
+      </div>
      
     </>
   )

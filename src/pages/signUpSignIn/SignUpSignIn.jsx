@@ -1,4 +1,7 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
+import { useDispatch,useSelector } from "react-redux";
+import {login,signUp} from "../../redux/action/api"
+import {Redirect} from "react-router-dom"
 
 import "./style.css"
 
@@ -7,9 +10,26 @@ const SignUpSignIn=()=>{
     const [registerEmail,setRegisterEmail]=useState("")
     const [registerPassword,setRegisterPassword]=useState("")
     const [confirmPassword,setConfirmPassword]=useState("")
+    const [signUpError,setSignUpError] = useState("")
+    const token = useSelector(state=>state.user.token)  
 
-    const [loginEmail,setLoginEmail]=useState("")
+    const [loginUsername,setLoginUsername]=useState("")
     const [loginPassword,setLoginPassword]=useState("")
+    const dispatch = useDispatch()
+     
+    const checkForRedirect = ()=>{
+        console.log("Here for redirect")
+         if(token){
+            return <Redirect to="/dashboard"/>
+         }
+         else{
+            return formsRender()
+         }
+    }
+
+    useEffect(()=>{
+      checkForRedirect()
+    },[token])
 
     const onUsernameChange =(e)=>{
         setUsername(e.target.value)
@@ -27,7 +47,7 @@ const SignUpSignIn=()=>{
     }
 
     const onLoginEmailChange=(e)=>{
-       setLoginEmail(e.target.value)
+       setLoginUsername(e.target.value)
     }
 
     const onLoginPasswordChange=(e)=>{
@@ -36,15 +56,17 @@ const SignUpSignIn=()=>{
 
     const onLoginSubmit=(e)=>{
         e.preventDefault()
+        dispatch(login(loginUsername,loginPassword))
     }
 
     const onRegisterSubmit=(e)=>{
         e.preventDefault()
+        dispatch(signUp(registerEmail,registerPassword,confirmPassword,username))
     }
-   
-    return (
-        <>
-          <div className="forms-container">
+
+    const formsRender=()=>{
+        return (
+            <div className="forms-container">
             <div className="form-container">
 
                 <div className="form-header">
@@ -79,7 +101,7 @@ const SignUpSignIn=()=>{
                          
                         <div className="input-container">
                             <label className="form-label">ایمیل</label>
-                            <input required onChange={onLoginEmailChange} value={loginEmail} type="email" className="form-input" />
+                            <input required onChange={onLoginEmailChange} value={loginUsername} type="text" className="form-input" />
                         </div>
                         <div className="input-container">
                             <label className="form-label">پسورد</label>
@@ -89,6 +111,12 @@ const SignUpSignIn=()=>{
                     </form>
             </div>
           </div>
+        )
+    }
+   
+    return (
+        <>
+         {checkForRedirect()}
         </>
     )
 }

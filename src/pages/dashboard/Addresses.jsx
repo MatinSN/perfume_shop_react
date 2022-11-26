@@ -57,7 +57,7 @@ const Addresses=()=>{
                          </div>
                          <div className="input-container">
                              <label className="form-label">آدرس</label>
-                             <textarea required onChange={onAddressChange }   className="form-input address"> {address} </textarea>
+                             <textarea required onChange={onAddressChange } value={address}  className="form-input address">  </textarea>
                        
 
                          </div>
