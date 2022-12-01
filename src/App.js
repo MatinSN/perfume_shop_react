@@ -16,13 +16,17 @@ import WomenTesters from "./pages/womenTesters/womenTesters"
 import BrandPerfumes from "./pages/brandPerfumes/brandPerfumes"
 import SignUpSignIn from "./pages/signUpSignIn/SignUpSignIn"
 import SearchResultPage from "./pages/searchResultPage/SearchResultPage"
+import CheckoutDetail from "./pages/checkoutDetail/CheckoutDetail"
+import BigSizePerfumesPage from "./pages/bigSizePerfumesPage/BigSizePerfumesPage"
+import CallbackPage from "./pages/callbackPage/CallbackPage"
+import BrandPage from "./pages/brandPage/BrandPage"
 import {useDispatch} from "react-redux"
 import {setCart} from "./redux/action/cartActions"
 import axios from "axios"
 import Dashboard from "./pages/dashboard/Dashboard"
-import {signUp,login,getCartProducts,addProductToCart,deleteItemWithQuantity,deleteCartItem} from "./redux/action/api"
+import {signUp,login,getCartProducts,addProductToCart,deleteItemWithQuantity,deleteCartItem,syncCart} from "./redux/action/api"
 import {useSelector} from "react-redux"
-import {setToken} from "./redux/action/userActions"
+import {setToken,setIsLoggedIn} from "./redux/action/userActions"
 
 
 function App() {
@@ -50,7 +54,8 @@ function App() {
     const token = localStorage.getItem("token")
 
     if(token){
-       dispatch(setToken(token))
+     dispatch(setToken(token))
+     dispatch(setIsLoggedIn(true))
      dispatch(getCartProducts(token))
 
     }
@@ -65,14 +70,31 @@ function App() {
 
     }
   }
-  //  const st = useSelector(state=>state.user)
+  
    const [fetch,setFetch]= useState(true)
+   const isLoggedIn =useSelector(state=>state.user.isLoggedIn)
+   const storeToken = useSelector(state=>state.user.token)
+   const storeCart = useSelector(state=>state.cart)
    useEffect(()=>{
     if(fetch){
+      
       setUserCart()
       setFetch(false)   
     }
+    console.log("is logged in",isLoggedIn)
+    if(isLoggedIn){
+      console.log("User has logged in")
+      const extractedCart =[]
+      storeCart.forEach((item)=>{
+        extractedCart.push({
+          id:item.productId,
+          quantity:item.quantity
+        })
+      })
 
+      dispatch(syncCart(storeToken,extractedCart))
+      
+    }
   //   axios.post('https://gateway.zibal.ir/v1/request', {
   //     "merchant": "zibal",
   //     "amount": 160000,
@@ -92,7 +114,7 @@ function App() {
       // }
      
       
-   },[])
+   },[isLoggedIn])
   //Step 4 :
   const addToCart = (product) => {
     // if hamro product alredy cart xa bhane  find garna help garxa
@@ -139,8 +161,14 @@ function App() {
       <Router>
         <Header CartItem={CartItem} />
         <Switch>
-          <Route path='/' exact>
+          {/* <Route path='/' exact>
             <Pages productItems={productItems} addToCart={addToCart} shopItems={shopItems} />
+          </Route> */}
+          <Route path='/checkout' exact>
+            <CheckoutDetail  />
+          </Route>
+          <Route path='/bigSize' exact>
+            <BigSizePerfumesPage  />
           </Route>
           <Route path='/dashboard' exact>
             <Dashboard  />
@@ -151,8 +179,11 @@ function App() {
             <Route path='/search/:searchWord' exact>
             <SearchResultPage />
             </Route>
-            <Route path='/discounts' exact>
+            <Route path='/' exact>
             <DiscountPage />
+            </Route>
+            <Route path='/callback' exact>
+            <CallbackPage />
             </Route>
             <Route path='/womenPerfumes' exact>
             <WomenPerfumes />
@@ -166,6 +197,9 @@ function App() {
             <Route path='/menTesters' exact>
             <MenTesters />
             </Route>
+            <Route path='/brands' exact>
+            <BrandPage    />
+          </Route>
             <Route path='/brands/:name' exact>
             <BrandPerfumes />
             </Route>

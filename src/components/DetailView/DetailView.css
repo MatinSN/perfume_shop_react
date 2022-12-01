@@ -93,14 +93,14 @@
 }
 
 .react-rater-star{
-  font-size: 40px;
+  font-size: 30px;
 }
 
 .will-be-active{
   color:#DEE135 !important;
 }
 .is-active{
-  color:#EBEE25 !important;
+  color:#F0E764 !important;
 }
 
 .is-active-half:before{
@@ -163,6 +163,46 @@ input[type=number] {
   width: 60%;
   min-width: 400px;
   margin: 40px 0;
+}
+.comment-form-container{
+  display: flex;
+  margin:40px;
+  justify-content: center;
+}
+
+.comment-form{
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  min-width: 450px;
+  padding:30px;
+  border:1px solid #6D9DAF;
+}
+
+.form-comment-header{
+  margin: 30px;
+  direction: rtl;
+}
+
+.form-comment{
+  display: flex;
+  flex-direction: column;
+  direction: rtl;
+
+}
+
+.comment-text{
+  margin: 40px;
+  padding: 40px;
+  border:1px solid #CACB9C;
+  height: 250px;
+}
+
+.comment-form-button{
+  width:100px;
+  margin:20px;
+  padding:20px;
+  background-color:#6D9DAF;
 }
 
   @media only screen and (max-width:800px) {

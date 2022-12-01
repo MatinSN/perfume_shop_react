@@ -7,35 +7,33 @@ const Navbar = () => {
   return (
     <>
       <header className='header'>
-        <div className='container d_flex'>
-          <div className=' d_flex'>
-
-          </div>
-
+        <div className='container d_flex nav-container'>
+        {/* onClick={() => setMobileMenu(false)} */}
+        {/* MobileMenu ? "nav-links-MobileMenu" :  */}
           <div className='navlink'>
-            <ul className={MobileMenu ? "nav-links-MobileMenu" : "link f_flex capitalize"} onClick={() => setMobileMenu(false)}>
+            <ul className={"link f_flex capitalize"}>
               {/*<ul className='link f_flex uppercase {MobileMenu ? "nav-links-MobileMenu" : "nav-links"} onClick={() => setMobileMenu(false)}'>*/}
             
-              <li>
-                <Link to='/user'>نیش و لوکس</Link>
+              <li className="nav-item">
+                <Link to='/brands'> <h5>برندها</h5> </Link>
               </li>
-              <li>
-                <Link to='/vendor'>ادکلن های سایز بزرگ</Link>
+              <li className="nav-item">
+                <Link to='/bigSize'><h5>ادکلن های سایز بزرگ</h5>   </Link>
               </li>
-              <li>
-                <Link to='/track'>تستر ها </Link>
+              <li className="nav-item">
+                <Link to='/track'>  <h4>تستر ها</h4></Link>
               </li>
-              <li>
-                <Link to='/discounts'>  حراج عطر</Link>
+              <li className="nav-item">
+                <Link to='/'>   <h4>خانه</h4></Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to='/'>خانه</Link>
-              </li>
+              </li> */}
             </ul>
 
-            <button className='toggle' onClick={() => setMobileMenu(!MobileMenu)}>
+            {/* <button className='toggle' onClick={() => setMobileMenu(!MobileMenu)}>
               {MobileMenu ? <i className='fas fa-times close home-btn'></i> : <i className='fas fa-bars open'></i>}
-            </button>
+            </button> */}
           </div>
         </div>
       </header>

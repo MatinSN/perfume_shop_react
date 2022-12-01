@@ -7,7 +7,7 @@ import "./DetailView.css"
 import { toFarsiNumber,getDiscountPrice } from "../../utils";
 import { useSelector,useDispatch } from "react-redux";
 import { addToCartAction } from "../../redux/action/cartActions";
-import {getPerfumeWithId,addProductToCart,getComments} from "../../redux/action/api"
+import {getPerfumeWithId,addProductToCart,getComments, addNewComment} from "../../redux/action/api"
 import Rater from 'react-rater'
 import 'react-rater/lib/react-rater.css'
 
@@ -36,7 +36,9 @@ const SamplePrevArrow = (props) => {
 const DetailView = () => {
    const {id} = useParams()
    const [numberOfPerfumes,setNumberOfPerfumes]=useState(1)
+   const [commentText,setCommentText] = useState("")
    const user = useSelector(state=>state.user)
+   const storeCart = useSelector(state=>state.cart)
    const dispatch = useDispatch()
    const [fetch,setFetch] = useState(true)
    const perfumes = useSelector(state=>state.perfumes)
@@ -64,6 +66,7 @@ const DetailView = () => {
    useEffect(()=>{
         
         if(fetch){
+          window.scrollTo(0, 0);
           dispatch(getPerfumeWithId(id))
           dispatch(getComments(id))
           setFetch(false)
@@ -85,6 +88,10 @@ const DetailView = () => {
     prevArrow: <SamplePrevArrow />,
   }
 
+  const onCommentTextChange=(e)=>{
+       setCommentText(e.target.value)
+  }
+
   const onIncreaseClick=(e)=>{
      e.preventDefault()
      setNumberOfPerfumes(numberOfPerfumes+1)
@@ -95,17 +102,24 @@ const DetailView = () => {
       setNumberOfPerfumes(numberOfPerfumes-1)
      }
   }
-  const onAddToCartClick =()=>{
 
-    if(user.token){
-         dispatch(addProductToCart(user.token,id,numberOfPerfumes))
-    }else{
-    console.log("For setting ")
-
-      dispatch(addToCartAction("1","test",20,"",numberOfPerfumes))
-    }
+  const onCommentSubmit=(e)=>{
+         e.preventDefault()
+         dispatch(addNewComment(user.token,id,commentText))
+         setCommentText("")
 
   }
+  const onAddToCartClick =(productName,price,discount,image)=>{
+
+    if(user.isLoggedIn){
+         dispatch(addProductToCart(user.token,id,numberOfPerfumes))
+    }else{
+    
+      dispatch(addToCartAction(id,productName,id,price,discount,image,numberOfPerfumes))
+ 
+
+  }
+}
   return (
     <>
      <div className="mrg perfume-detail-container">
@@ -138,7 +152,7 @@ const DetailView = () => {
           </div>
           <div className='rate d-flex justify-content-end m-t-5'>
             <h3 className="mrg-small"><label>تومان</label>{toFarsiNumber(getDiscountPrice(parseFloat(perfumeDetail.price),parseInt(perfumeDetail.discount)))}  </h3>
-            <h3 className="mrg-small text-decoration-line-through"><label>تومان</label>{toFarsiNumber(12000000)}  </h3>
+            <h3 className="mrg-small text-decoration-line-through"><label>تومان</label>{toFarsiNumber(perfumeDetail.price)}  </h3>
 
           </div>
        
@@ -190,7 +204,7 @@ const DetailView = () => {
              </tr>
              <tr className="mrg-top-ms">
                 <td><span >ماندگاری</span></td>
-                <td ><span > {perfumeDetail.persistance}
+                <td ><span > {perfumeDetail.persistence}
 </span></td>
                 
              </tr>
@@ -212,7 +226,9 @@ const DetailView = () => {
              <button className="addToCart-btn" onClick={onIncreaseClick}>+</button>
             </div>
             <div >
-            <button className="addBtn" onClick={onAddToCartClick}>افزودن به سبد خرید</button>
+            <button className="addBtn" onClick={()=>
+              onAddToCartClick(perfumeDetail.name,perfumeDetail.price,perfumeDetail.discount,perfumeDetail.image1)
+            }>افزودن به سبد خرید</button>
 
             </div>
           </div>)}
@@ -243,6 +259,19 @@ const DetailView = () => {
       </div>
   
      </div>
+     <hr />
+      <div className="comment-form-container">
+      <form onSubmit={onCommentSubmit} className="comment-form">
+          <h3 className="form-comment-header">دیدگاه خود را بنویسید</h3>
+          <div className="form-comment">
+            <label>دیدگاه شما</label>
+            <textarea required value={commentText} onChange={onCommentTextChange} className="comment-text" />
+          </div>
+          <button className="comment-form-button">ثبت</button>
+        </form>
+      </div>
+       
+     
       <hr />
       <div className="comments-container">
           {comments.map((comment)=>{

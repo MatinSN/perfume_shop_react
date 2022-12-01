@@ -57,7 +57,7 @@ const Dashboard=()=>{
             <div className="dashboard-links">
                    <ul>
                      <li onClick={()=>{onViewOptionClick("UserInfo")}}>اطلاعات کاربری</li>
-                     <li onClick={()=>{onViewOptionClick("Addresses")}}> آدرس ها</li>
+                     {/* <li onClick={()=>{onViewOptionClick("Addresses")}}> آدرس ها</li> */}
                      <li onClick={()=>{onViewOptionClick("Orders")}}> سفارش ها</li>
                      <li>خروج از سیستم</li>
 

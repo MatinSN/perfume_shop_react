@@ -1,15 +1,27 @@
 import { TextField } from "@mui/material"
-import React,{useState} from "react"
+import React,{useState,useEffect} from "react"
+import { useSelector } from "react-redux"
 
 
 
-const Addresses=()=>{
+const Addresses=({grabData=false,onGrabData=()=>{}})=>{
     const [name,setName]=useState("")
     const [lastName,setLastName]=useState("")
     const [state,setState]=useState("")
     const [city,setCity]=useState("")
     const [address,setAddress]=useState("")
+    const [number,setNumber] = useState("")
+    const addressError = useSelector((state)=>state.app.addressError)
 
+    useEffect(()=>{
+          if(grabData){
+            onGrabData(name,lastName,state,city,number,address)
+          }
+    },[grabData])
+     
+    const onNumberChange=(e)=>{
+        setNumber(e.target.value)
+    }
 
     const onNameChange=(e)=>{
         setName(e.target.value)
@@ -28,7 +40,7 @@ const Addresses=()=>{
 
     }
     const onAddressChange=(e)=>{
-        setAddress(e.target.newPassword)
+        setAddress(e.target.value)
     }
 
     const onApplyChangesClick=(e)=>{
@@ -37,6 +49,8 @@ const Addresses=()=>{
     return (
         <>
         <div>
+            {addressError && <div className="error"><h4>{addressError}</h4></div>}
+            
           <form onSubmit={onApplyChangesClick} className="custom-form">
                          
                          <div className="input-container">
@@ -56,11 +70,16 @@ const Addresses=()=>{
                              <input required onChange={onCityChange } value={city} type="text" className="form-input" />
                          </div>
                          <div className="input-container">
+                             <label className="form-label"> شماره تماس</label>
+                             <input required onChange={onNumberChange } value={number} type="number" className="form-input" />
+                         </div>
+                         <div className="input-container">
                              <label className="form-label">آدرس</label>
                              <textarea required onChange={onAddressChange } value={address}  className="form-input address">  </textarea>
                        
 
                          </div>
+                         
                            <button  className="form-btn">ذخیره </button>
            </form>
         </div>

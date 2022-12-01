@@ -3,13 +3,16 @@ import "./style.css"
 import { useSelector,useDispatch } from "react-redux"
 import {toFarsiNumber,getDiscountPrice} from "../../utils"
 import {deleteCartItem,deleteItemWithQuantity,addProductToCart} from "../../redux/action/api"
-
+import {increaseCartItem,decreaseCartItem,deleteCartItemAction} from "../../redux/action/cartActions"
 
 const Cart = ({ CartItem, addToCart, decreaseQty }) => {
   // Stpe: 7   calucate total of items
   const [totalPrice,setTotalPrice] = useState(0)
   const [numberOfPerfumes,setNumberOfPerfumes]=useState(1)
   const cart = useSelector(state=>state.cart)
+  const isLoggedIn = useSelector(state=>state.user.isLoggedIn)
+  const token = useSelector(state=>state.user.token)
+
   const dispatch = useDispatch()
   // prodcut qty total
    
@@ -27,12 +30,12 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
 
   const onIncreaseClick=(productId="")=>{
   
-    const token = localStorage.getItem("token")
-    if(token){
+    
+    if(isLoggedIn){
          dispatch(addProductToCart(token,productId,1))
     }
     else{
-
+           dispatch(increaseCartItem(productId,1))
     }
     
  }
@@ -40,24 +43,31 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
    
     if(currentQuantity > 1){
       const token = localStorage.getItem("token")
-      if(token){
+      if(isLoggedIn){
            dispatch(deleteItemWithQuantity(token,productId,1))
       }
       else{
+        dispatch(decreaseCartItem(productId,1))
   
       }
     }
  }
 
  const onRemoveBtnPress=(productId)=>{
-       const token = localStorage.getItem("token")
-       if(token){
+       if(isLoggedIn){
          dispatch(deleteCartItem(token,productId))
          
        }
        else{
-
+          dispatch(deleteCartItemAction(productId))
        }
+ }
+
+ const onStartPayingButtonClick=()=>{
+      if(cart.length > 0){
+        window.location.replace(`http://127.0.0.1:3000/checkout`);
+
+      }
  }
 
   return (
@@ -73,7 +83,7 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
                 return (
                   <div className="total-price-container">
                   <p>جمع جزء </p>
-                  <h6>{toFarsiNumber(item.quantity*getDiscountPrice(item.price,item.discount))}</h6>
+                  <h6> {toFarsiNumber(item.quantity*getDiscountPrice(item.price,item.discount))} تومان</h6>
                 </div>
                 )
                })}
@@ -81,10 +91,10 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
 
               <div className="total-price-container">
                 <p>مجموع </p>
-                <h6>{toFarsiNumber(totalPrice)}</h6>
+                <h6>{toFarsiNumber(totalPrice)} تومان</h6>
               </div>
               <hr />
-              <button className="start-pay-button">ادامه جهت تسویه حساب</button>
+              <button onClick={onStartPayingButtonClick} className="start-pay-button">ادامه جهت تسویه حساب</button>
           </div>
         </div>
         <div className="cart-container">
@@ -111,12 +121,12 @@ const Cart = ({ CartItem, addToCart, decreaseQty }) => {
 
                       </div>
                     </div>
-                    <div className="product-price"><h6>{toFarsiNumber(getDiscountPrice(item.price,item.discount))} </h6></div>
+                    <div className="product-price"><h6>{toFarsiNumber(getDiscountPrice(item.price,item.discount))}تومان </h6></div>
                     <div className="product-quantity"> 
                       <button className="decrease-btn" onClick={()=>{onDecreaseClick(item.productId,item.quantity)}}>-</button>
                       <input className="quantity-input" value={item.quantity} type="number" />
                       <button className="increase-btn" onClick={()=>{onIncreaseClick(item.productId)}}>+</button></div>
-                    <div className="product-subtotal"><h6> {toFarsiNumber(item.quantity*getDiscountPrice(item.price,item.discount))}</h6></div>
+                    <div className="product-subtotal"><h6> {toFarsiNumber(item.quantity*getDiscountPrice(item.price,item.discount))} تومان</h6></div>
                 </div>
                   )
                  })}

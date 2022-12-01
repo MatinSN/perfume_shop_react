@@ -33,9 +33,57 @@
    width:400px;
    height:200px;
    max-width: 400px;
-
+   
 }
 
 textarea {
     resize: none;
+ }
+
+
+ .error{
+    width: 100%;
+    margin:30px;
+    color: #F35D5D;
+    display: flex;
+    justify-content: center;
+ }
+
+ .orders-container{
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    min-width: 600px;
+    margin:40px 40px;
+   
+
+ }
+
+ .order-container{
+    display: flex;
+    flex-direction: column;
+    margin:30px 0;
+    padding: 30px;
+    border-radius:3%;
+    border:3px solid #93B0A5;
+
+
+ }
+
+ .order-info{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row-reverse;
+ }
+
+ .orders{
+    display: flex;
+    margin: 30px 0;
+    flex-direction: column;
+ }
+
+ .order-item{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
  }

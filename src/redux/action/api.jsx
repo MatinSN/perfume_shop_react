@@ -8,6 +8,7 @@ import { setDesignerBrands,setLuxBrands } from "./brandActions"
 import {addNewSearchCard,addSearchResult} from "./searchActions"
 import {addNewPerfume} from "./perfumeDetailActions"
 import { resetCommentReducer,addComment,setComments } from "./commentActions"
+import { setOrders } from "./ordersActions"
 
 export function testApi(){
     return dispatch =>{
@@ -33,11 +34,11 @@ export function testApi(){
     }
 }
 
-export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both",rateSort=false,priceSortAce=false,priceSortDec=false,brand="",search=""){
+export function getPerfumes(page=1,count=10,dateSort=false,actionType=ActionTypes.ADD_CARD_INFO,tester="both",gender="both",rateSort=false,priceSortAce=false,priceSortDec=false,brand="",search="",big_size=false){
     return dispatch =>{
         console.log("here you go", actionType)
         return axios
-        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}&rate_sort=${rateSort}&price_sort_dec=${priceSortDec}&price_sort_ace=${priceSortAce}&brand=${brand}&search=${search}`)
+        .get(`http://127.0.0.1:8000/perfumes/?page=${page}&count=${count}&date_sort=${dateSort}&tester=${tester}&gender=${gender}&rate_sort=${rateSort}&price_sort_dec=${priceSortDec}&price_sort_ace=${priceSortAce}&brand=${brand}&search=${search}&big_size=${big_size}`)
          .then((response)=>{
            const count = response.data.count
             const data =response.data.results
@@ -94,7 +95,7 @@ export const login=(username="",password="")=>{
             username:username,
             password
         }).then((response)=>{
-            
+            console.log("login",response.data)
             dispatch(setToken(response.data.token))
             dispatch(setUserInfo({email:response.data.email,username:response.data.username}))
             dispatch(setIsLoggedIn(true))
@@ -250,7 +251,8 @@ export const getPerfumeWithId=(perfumeId)=>{
                  image1 :data.perfume.image,
                  image2 :data.perfume.image2,
                  quantity :data.quantity,
-                 details :data.perfume.details
+                 details :data.perfume.details,
+                 persistence:data.perfume.persistence
             }
            
             dispatch(addNewPerfume(id,perfume))
@@ -271,7 +273,7 @@ export const addNewComment=(token="",productId,comment="")=>{
             dispatch(addComment({
                 id:response.data.id,
                 comment:response.data.comment,
-                createdAt:new Date(comment.created_at),
+                createdAt:new Date(response.data.created_at),
                 username:response.data.user.username
             }))
         }) 
@@ -300,6 +302,69 @@ export const getComments=(productId)=>{
         }) 
     }
 }
+
+
+export const syncCart = (token,cart)=>{
+    
+    
+        return (dispatch)=>{
+            return axios.post(`http://127.0.0.1:8000/cart_check/`,{cart:JSON.stringify(cart)},{
+                headers: {
+                    'Authorization': `Token ${token}`
+                  }
+            })
+            .then((response)=>{
+            
+              console.log("The synced cart is",response.data)
+              dispatch(getCartProducts(token))
+            }) 
+        }
+    
+}
+
+
+export const paymentRequest=(token,address)=>{
+    return dispatch=>{
+        return axios.post(`http://127.0.0.1:8000/payment_request/`,{address:JSON.stringify(address)},{
+            headers: {
+                'Authorization': `Token ${token}`
+              }
+        })
+        .then((response)=>{
+            console.log("track id data is",response.data.trackId)
+            window.open(`https://gateway.zibal.ir/start/${response.data.trackId}`, '_blank').focus();
+            // window.location.replace(`https://gateway.zibal.ir/start/${response.data.trackId}`);
+       
+        }) 
+    }
+}
+
+
+export const getOrders=(token)=>{
+    return dispatch=>{
+        return axios.get(`http://127.0.0.1:8000/orders/`,{
+            headers: {
+                'Authorization': `Token ${token}`
+              }
+        })
+        .then((response)=>{
+           const ordersData = response.data
+           const orders = []
+           ordersData.forEach(order=>{
+                orders.push({
+                    id:order.id,
+                    trackId:order.trackId,
+                    status:order.status,
+                    paymentDate:new Date(order.payment_date),
+                    amount:order.amount,
+                    items:order.orders
+                })
+           })
+            dispatch(setOrders(orders))
+        }) 
+    }
+}
+
 
 
 

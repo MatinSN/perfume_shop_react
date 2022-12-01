@@ -1,0 +1,89 @@
+.checkout-container{
+    display: flex;
+    justify-content: space-around;
+    margin:100px 300px;
+    
+}
+
+.checkout-header{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 40px;
+}
+
+.checkout-summary-container{
+    width:500px;
+    
+    direction: rtl;
+    border:3px solid #4588A2;
+    padding :30px;
+}
+
+.address-container{
+    margin-left: 100px;
+}
+
+.summary-item{
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+}
+
+.summary-name{
+    flex-grow: 1;
+    width: 100%;
+}
+
+.summary-price{
+    flex-grow: 1;
+    width:250px;
+}
+
+.totalPriceContainer{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 20px;
+}
+
+
+.payment-logo{
+    display: flex;
+}
+
+.logo-header{
+    margin-top:40px;
+}
+
+.order-button{
+    width: 100%;
+    padding:10px 0;
+    background-color: #4588A2;
+}
+
+.shipping-info-title{
+    display: flex;
+    justify-content: center;
+}
+
+@media only screen and (max-width:900px) {
+    .checkout-container{
+        display: flex;
+        flex-direction: column-reverse;
+        align-items:center;
+        margin: 50px 0;
+    }
+
+    .checkout-summary-container{
+        width:100%;
+        min-width: 400px;
+        direction: rtl;
+        border:3px solid #4588A2;
+        padding :30px;
+        margin:30px
+    }
+
+    .address-container{
+        margin-left: 0px;
+    }
+  
+  }

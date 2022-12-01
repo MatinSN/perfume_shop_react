@@ -6,10 +6,12 @@ import {getPerfumes} from "../../redux/action/api"
 import ActionTypes from "../../redux/action/actionTypes"
 import { toFarsiNumber,getDiscountPrice } from "../../utils"
 import {resetSearchResults} from "../../redux/action/searchActions"
+import OutsideClick from "./OutsideClick"
 
 const Search = ({ CartItem }) => {
    
    const [numberOfCartItems,setNumberOfCartItems]=useState(0)
+   const [toggleSearchResult,setToggleSearchResult] = useState(true)
    const cart = useSelector(state=>state.cart)
    const token = useSelector(state=>state.user.token)
    const searchResults = useSelector(state=>state.searchCards.searchResults)
@@ -60,6 +62,10 @@ const Search = ({ CartItem }) => {
 const onSearchWordChange =(e)=>{
       setSearchWord(e.target.value)
 
+      if(!toggleSearchResult){
+        setToggleSearchResult(true)
+      }
+
       console.log("search word is",searchWord)
       dispatch(resetSearchResults())
 
@@ -79,29 +85,45 @@ const handleKeyDown = (event) => {
     window.location.replace(`http://127.0.0.1:3000/search/${searchWord}`);
     
   }
+
+  
 };
+
+const onSearchInputOut=()=>{
+  setToggleSearchResult(false)
+
+}
+const onSearchInputIn=()=>{
+  setToggleSearchResult(true)
+}
   return (
     <>
       <section className='search'>
-        <div className='container c_flex'>
-          <div className='logo width '>
+        <div className='container c_flex search-container'>
+          {/* <div className='logo width '>
             <img src={logo} alt='' />
-          </div>
+          </div> */}
 
           <div className='search-box f_flex'>
            
             <i className='fa fa-search'></i>
 
-            <input type='text' onKeyDown={handleKeyDown} value={searchWord} onChange={onSearchWordChange} placeholder='جست و جو عطر مورد نظر' />
+            <input onFocus={onSearchInputIn} onBlur={onSearchInputOut} type='text' onKeyDown={handleKeyDown} value={searchWord} onChange={onSearchWordChange} placeholder='جست و جو عطر مورد نظر' />
           
             <span className="search-btn-container"><button className="search-btn">جست و جو</button></span>
-            {searchResults.length > 0 && <div className="search-result-container">
+            {searchResults.length > 0 && toggleSearchResult && 
+             
+            
+            <div className="search-result-container">
               {searchResults.map((result)=>{
                   return(
                     <>                   
-                     <div className="search-item-container">
+                     <div className="search-item-container" onMouseDown={()=>{window.location.replace(`http://127.0.0.1:3000/product/${result.id}`)}}>
+                      
                     <div className="search-item search-item-image">
+                      <div >
                       <img width="100" height="100" src={result.image}></img>
+                      </div>
                     </div>
                     <div className="search-item search-item-name">
                       <h5> {result.name}</h5>
@@ -122,10 +144,12 @@ const handleKeyDown = (event) => {
                   )
               })}
           
-             
               
               
-            </div>}
+            </div>
+            
+      
+            }
           </div>
   
           <div className='icon f_flex width icon-container'>

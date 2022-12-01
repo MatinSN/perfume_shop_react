@@ -4,11 +4,10 @@ import { useDispatch,useSelector } from "react-redux"
 import { getPerfumes } from "../../redux/action/api"
 import ActionTypes from "../../redux/action/actionTypes"
 import { resetCardsReducer } from "../../redux/action/cardAction"
-import { useParams } from "react-router-dom"
 
 
-const BrandPerfumes = () => {
-    const {name} = useParams()
+const BigSizePerfumesPage = () => {
+  
     const [pageNum,setPageNum]=useState("1")
     const [fetchData,setFetchData] = useState(true)
     const [pageCount,setPageCount]=useState(1)
@@ -20,7 +19,7 @@ const BrandPerfumes = () => {
 
   const getPageData=(pageNum,dateSort=false,rateSort=false,priceDec=false,priceAce=false)=>{
        dispatch(resetCardsReducer())
-       dispatch(getPerfumes(pageNum,itemsPerPage,dateSort,ActionTypes.ADD_CARD_INFO,"Both","Both",rateSort,priceAce,priceDec,name))
+       dispatch(getPerfumes(pageNum,itemsPerPage,dateSort,ActionTypes.ADD_CARD_INFO,false,"Both",rateSort,priceAce,priceDec,"","","true"))
   }
   
   const setNumberOfPages=()=>{
@@ -39,10 +38,10 @@ const BrandPerfumes = () => {
 
   return (
     <>
-    <LongList itemsPerPage={itemsPerPage} getPageData={getPageData} pageCount={pageCount} shopItems={cardsInfo.cards} title={name}  />
+    <LongList itemsPerPage={itemsPerPage} getPageData={getPageData} pageCount={pageCount} shopItems={cardsInfo.cards} title="عطرهای مردانه"  />
 
     </>
   )
 }
 
-export default BrandPerfumes
+export default BigSizePerfumesPage

@@ -5,7 +5,7 @@ import {Redirect} from "react-router-dom"
 
 import "./style.css"
 
-const SignUpSignIn=()=>{
+const SignUpSignIn=({shouldRedirect = true})=>{
     const [username,setUsername]=useState("")
     const [registerEmail,setRegisterEmail]=useState("")
     const [registerPassword,setRegisterPassword]=useState("")
@@ -19,7 +19,7 @@ const SignUpSignIn=()=>{
      
     const checkForRedirect = ()=>{
         console.log("Here for redirect")
-         if(token){
+         if(token && shouldRedirect){
             return <Redirect to="/dashboard"/>
          }
          else{

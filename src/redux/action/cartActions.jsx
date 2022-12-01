@@ -16,6 +16,36 @@ export const addToCartAction=(id,productName,productId,price,discount,image,quan
     }
 }
 
+export const decreaseCartItem=(productId,quantity)=>{
+    return {
+        type:ActionTypes.DECREASE_CART_ITEM,
+        payload:{
+            productId,
+            quantity
+        }
+    }
+}
+
+export const increaseCartItem=(productId,quantity)=>{
+    return {
+        type:ActionTypes.INCREASE_CART_ITEM,
+        payload:{
+            productId,
+            quantity
+        }
+    }
+}
+
+export const deleteCartItemAction=(productId)=>{
+    return {
+        type:ActionTypes.DELETE_CART_ITEM,
+        payload:{
+            productId
+        }
+    }
+}
+
+
 export const setCart=(cart=[])=>{
     return{
         type:ActionTypes.SET_CART,

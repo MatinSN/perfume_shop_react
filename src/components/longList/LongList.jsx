@@ -8,13 +8,20 @@ import "./style.css"
 
 const LongList = ({ shopItems,title="A title for the list",pageCount ,getPageData,itemsPerPage}) => {
   const [open, setOpen] = useState(false);
+  const [dateFilter,setDateFilter]= useState(true)
+  const [rateFilter,setRateFilter]= useState(false)
+  const [priceDecFilter,setPriceDecFilter]= useState(false)
+  const [priceAceFilter,setPriceAceFilter]= useState(false)
+
+
+
   
   const dateSort="مرتب سازی براساس آخرین"
   const priceDec="مرتب سازی بر اساس گرانترین"
   const priceAce ="مرتب سازی بر اساس ارزانترین"
   const rateSort = "مرتب سازی با اساس امتیاز"
 
-  const [selectedFilter,setSelectedFilter]=useState(rateSort)
+  const [selectedFilter,setSelectedFilter]=useState(dateSort)
   const [forcedPage,setForcePage]=useState(0)
 
   const handleOpen = () => {
@@ -23,6 +30,11 @@ const LongList = ({ shopItems,title="A title for the list",pageCount ,getPageDat
 
   const dateSortHandler=()=>{
     setForcePage(0)
+    setDateFilter(true)
+    setRateFilter(false)
+    setPriceDecFilter(false)
+    setPriceAceFilter(false)
+
     getPageData("1",true,false,false,false)
     setSelectedFilter(dateSort)
     setOpen(false)
@@ -30,19 +42,33 @@ const LongList = ({ shopItems,title="A title for the list",pageCount ,getPageDat
 
   const priceDecHandler=()=>{
     setForcePage(0)
+    setDateFilter(false)
+    setRateFilter(false)
+    setPriceDecFilter(true)
+    setPriceAceFilter(false)
     getPageData("1",false,false,true,false)
+
     setSelectedFilter(priceDec)
      
     setOpen(false)
   }
   const priceAceHandler=()=>{
     setForcePage(0)
+    setDateFilter(false)
+    setRateFilter(false)
+    setPriceDecFilter(false)
+    setPriceAceFilter(true)
     getPageData("1",false,false,false,true)
+
     setSelectedFilter(priceAce)
     setOpen(false)
   }
   const rateSortHandler=()=>{
     setForcePage(0)
+    setDateFilter(false)
+    setRateFilter(true)
+    setPriceDecFilter(false)
+    setPriceAceFilter(false)
     getPageData("1",false,true,false,false)
     setSelectedFilter(rateSort)
     setOpen(false)
@@ -54,7 +80,7 @@ const LongList = ({ shopItems,title="A title for the list",pageCount ,getPageDat
           `User requested page number ${event.selected} `
         );
         
-        getPageData((parseInt(event.selected)+1).toString())
+        getPageData((parseInt(event.selected)+1).toString(),dateFilter,rateFilter,priceDecFilter,priceAceFilter)
         setForcePage(parseInt(event.selected))
       };
    
@@ -69,11 +95,12 @@ const LongList = ({ shopItems,title="A title for the list",pageCount ,getPageDat
           <button onClick={handleOpen}>{selectedFilter}</button>
           {open ? (
         <ul className="menu">
-          <li className="menu-item">
-            <button onClick={rateSortHandler}>{rateSort}</button>
-          </li>
+         
           <li className="menu-item">
             <button onClick={dateSortHandler}>{dateSort}</button>
+          </li>
+          <li className="menu-item">
+            <button onClick={rateSortHandler}>{rateSort}</button>
           </li>
           <li className="menu-item">
             <button onClick={priceDecHandler}>{priceDec}</button>

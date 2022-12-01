@@ -10,6 +10,8 @@ import brandReducer from "./reducers/brandReducer";
 import searchReducer from "./reducers/searchReducer";
 import perfumeDetailReducer from "./reducers/perfumeDetailReducer";
 import commentReducer from "./reducers/commentReducer";
+import appReducer from "./reducers/appReducer";
+import ordersReducer from "./reducers/ordersReducer";
 
 const store=configureStore({
   reducer:{
@@ -21,7 +23,9 @@ const store=configureStore({
     brands:brandReducer,
     searchCards : searchReducer,
     perfumes:perfumeDetailReducer,
-    comments:commentReducer
+    comments:commentReducer,
+    app:appReducer,
+    orders:ordersReducer
   },
   middleware:[thunk]
 });

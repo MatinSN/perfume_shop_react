@@ -36,7 +36,7 @@ const DiscountPage = ({ addToCart, shopItems }) => {
       <>
        <div className='shop-header'>
 
-         <h5>مشاهده همه </h5>
+       <Link to="menPerfumes"> <h5>مشاهده همه </h5></Link>
 
          <h3>حراج عطر های مردانه</h3>
          </div>
@@ -51,7 +51,7 @@ const DiscountPage = ({ addToCart, shopItems }) => {
        <Shop shopItems={cards.womenPerfumes} addToCart={addToCart} />
        <hr />
        <div className='shop-header'>
-          <h5>مشاهده همه </h5>
+        <Link to="womenTesters"> <h5>مشاهده همه </h5></Link> 
 
          <h3>حراج تستر های زنانه</h3>
          
@@ -59,13 +59,13 @@ const DiscountPage = ({ addToCart, shopItems }) => {
        <Shop shopItems={cards.womenTesters} addToCart={addToCart} />
        <hr />
        <div className='shop-header'>
-          <h5>مشاهده همه </h5>
+         <Link to="menTesters"> <h5>مشاهده همه </h5></Link>
 
          <h3>حراج تستر های مردانه</h3>
        </div>
        <Shop shopItems={cards.menTesters} addToCart={addToCart} />
        <hr />
-       <div className='shop-header'>
+       {/* <div className='shop-header'>
           <h5>مشاهده همه </h5>
 
          <h3>برندهای لوکس</h3>
@@ -78,7 +78,7 @@ const DiscountPage = ({ addToCart, shopItems }) => {
 
          <h3>برندهای دیزاینر</h3>
        </div>
-       <Brands brands={brands.designerBrands} />
+       <Brands brands={brands.designerBrands} /> */}
       </>
     )
   }
